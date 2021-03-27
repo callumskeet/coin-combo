@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CoinRepresentation</name>
+    </assembly>
+    <members>
+        <member name="T:CoinRepresentation.CoinRepresentation">
+            <summary>Class <c>CoinRepresentation</c> provides a static solve method which
+                solves a variant of the subset-sum problem.</summary>
+        </member>
+        <member name="M:CoinRepresentation.CoinRepresentation.Solve(System.Int64)">
+            <summary>This method find the number of coin combinations that
+                add up to <paramref name="sum"/>. 
+                The set of coins is defined by: 
+                {k ∈ N | 2^k where k: 0 &lt;= k &lt; log_2(<paramref name="sum"/>)}
+                Where possible combinations can use a coin 0 to 2 times (inclusive)</summary>
+            <param><c>sum</c> is the target value to find combinations for.</param>
+            <returns>The number of possible combinations that sum to <paramref name="sum"/></returns>
+            <see cref="M:CoinRepresentation.CoinRepresentation.CountCombinations(System.Int64[],System.Int64,System.Int64,System.Int64,System.Collections.Hashtable)"/>
+        </member>
+        <member name="M:CoinRepresentation.CoinRepresentation.CountCombinations(System.Int64[],System.Int64,System.Int64,System.Int64,System.Collections.Hashtable)">
+            <summary>Finds the number of combinations in <paramref name="weights"/> that
+                sum to <paramref name="target"/>. Valid combinations can exclude, include
+                or twice include a value in <paramref name="weights"/>.
+            <example>Example of initial call:
+            <code>
+                long[] weights = new long[] { 1L, 2L, 3L, 4L, 5L, 6L };
+                long remaining = 0;
+                for (int i = 0; i &lt; weights.Length; i++) remaining += weights[i];
+                CountCombinations(weights, 42L, weights.Length - 1, remaining, new Hashtable());
+            </code>
+            </example>
+            </summary>
+            <param><c>weights</c> is the set of values to find combinations of.</param>
+            <param><c>target</c> is the value that combinations are being searched for.</param>
+            <param><c>i</c> corresponds to an index of <paramref name="weights"/>.</param>
+            <param><c>remaining</c> is the combined sum of weights[0...i] inclusive.</param>
+            <param><c>table</c> stores the results of completed function calls.</param>
+            <returns>The number of valid combinations that summed to <paramref name="target"/>
+                in <paramref name="weights"/>.</returns>
+            <remarks>This method uses recursion to solve this subset-sum problem. 
+                <para>Without optimisations, this method is O(<c>3^n</c>) where <c>n</c>
+                is the length of <paramref name="weights"/>. The total number of nodes in the
+                recursion tree is approximately <c>(3^(n+1))/2</c>. However, pruning and 
+                memoisation significantly reduce the number of recursive calls 
+                required.</para>
+                <para>The hashtable requires O(<c>2n</c>) memory. Considering use of a 
+                hashtable significantly reduced execution time the trade-off here
+                is highly favourable. Analysis indicated that duplicate states are a rare
+                occurrence. Therefore the time savings are a result of where duplicate
+                states occur, at high levels of the recursion stack. This allows the
+                algorithm to effectively prune a significant portion of calls.</para>
+                <para>I used this video lecture https://www.youtube.com/watch?v=kyLxTdsT8ws to
+                understand the problem. My algorithm is based of off the teachings given
+                there.</para>
+            </remarks>
+            <see cref="M:CoinRepresentation.CoinRepresentation.Solve(System.Int64)"/>
+        </member>
+    </members>
+</doc>

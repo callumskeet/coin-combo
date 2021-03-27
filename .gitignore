@@ -1,0 +1,8 @@
+.vs
+.vscode
+bin
+data
+obj
+
+*.ignore
+*.csv
